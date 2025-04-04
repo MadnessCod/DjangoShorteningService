@@ -1,0 +1,20 @@
+[project]
+name = "urlshorteningservice"
+version = "0.1.0"
+description = "Django app to shorten url, able to operate CRUD operations on url"
+readme = "README.md"
+requires-python = ">=3.12"
+
+dependencies = [
+    "django==5.2",
+    "djangorestframework>=3.16.0",
+]
+
+[dev.dependencies]
+lint = [
+    "black>=25.1.0",
+    "pylint>=3.3.7",
+]
+typecheck = [
+    "mypy>=1.15.0",
+]
