@@ -147,3 +147,4 @@ tests/screenshots/
 poetry.toml
 media/
 TODOs.md
+*.http

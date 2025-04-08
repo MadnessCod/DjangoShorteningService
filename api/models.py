@@ -23,7 +23,7 @@ class BaseModel(models.Model):
         raise NotImplemented("Not Implemented method")
 
 
-class UrlModel(BaseModel):
+class Url(BaseModel):
     """
     UrlModel consists of url, auto generated short_code and access_count, and
         the use created it
