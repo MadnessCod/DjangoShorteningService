@@ -25,3 +25,9 @@ class CreateSerializer(serializers.ModelSerializer):
         fields = [
             "url",
         ]
+        read_only_fields = ["id", "short_code", "created_at", "updated_at"]
+
+    def validate_url(self, value):
+        if Url.objects.filter(url=value).exists():
+            raise serializers.ValidationError("Url already exists")
+        return value

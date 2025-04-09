@@ -1,5 +1,3 @@
-from django.shortcuts import render
-from django.urls import set_urlconf
 from rest_framework import status
 
 from rest_framework.views import APIView
@@ -34,5 +32,10 @@ class ShortenView(CreateAPIView):
         IsAuthenticated,
     ]
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            instance = serializer.save(user=self.request.user)
+            print(instance)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
