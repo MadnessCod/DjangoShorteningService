@@ -1,7 +1,7 @@
 from rest_framework import status
 
 from rest_framework.views import APIView
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
@@ -39,3 +39,18 @@ class ShortenView(CreateAPIView):
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+
+class ShortenDetailView(RetrieveAPIView):
+    queryset = Url.objects.all()
+    serializer_class = CreateSerializer
+    permission_classes = [
+        IsAuthenticated,
+    ]
+    lookup_field = "short_code"
+
+    def get(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.access_count += 1
+        instance.save(update_fields=["access_count"])
+        serializer = self.serializer_class(instance)
+        return Response(serializer.data, status=status.HTTP_200_OK)
