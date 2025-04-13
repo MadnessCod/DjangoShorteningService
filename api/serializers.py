@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 
 from .models import Url
+from .utils import random_number_plus_characters
 
 
 class SignUpSerializer(serializers.ModelSerializer):
@@ -37,3 +38,12 @@ class CreateSerializer(serializers.ModelSerializer):
         if existing:
             return existing
         return Url.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        url = validated_data.get("url")
+        if url is None:
+            raise serializers.ValidationError("Have to specify a url")
+        instance.url = url
+        instance.short_code = random_number_plus_characters(url)
+        instance.save()
+        return instance
