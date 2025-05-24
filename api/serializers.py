@@ -47,3 +47,9 @@ class CreateSerializer(serializers.ModelSerializer):
         instance.short_code = random_number_plus_characters(url)
         instance.save()
         return instance
+
+
+class DetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Url
+        fields = ["id", "url", "short_code", "created_at", "updated_at", "access_count"]

@@ -5,13 +5,14 @@ from rest_framework.generics import (
     CreateAPIView,
     RetrieveAPIView,
     RetrieveUpdateAPIView,
+    DestroyAPIView,
 )
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 
 from .models import Url
-from .serializers import CreateSerializer, SignUpSerializer
+from .serializers import CreateSerializer, SignUpSerializer, DetailSerializer
 
 
 # Create your views here.
@@ -65,3 +66,20 @@ class ShortenDetailView(RetrieveUpdateAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class DeleteView(DestroyAPIView):
+    queryset = Url.objects.all()
+    lookup_field = "short_code"
+    permission_classes = [
+        IsAuthenticated,
+    ]
+
+
+class CompleteDetailView(RetrieveAPIView):
+    queryset = Url.objects.all()
+    serializer_class = DetailSerializer
+    permission_classes = [
+        IsAuthenticated,
+    ]
+    lookup_field = "short_code"
